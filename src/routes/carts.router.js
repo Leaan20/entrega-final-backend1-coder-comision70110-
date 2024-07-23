@@ -7,8 +7,9 @@ const cartRouter = Router();
 const manager = new CartManager('./src/data/carts/carts.json', './src/data/products/products.json');
 
 // GET
+
 // Ruta para ver un carrito específico con los productos que hay dentro
-cartRouter.get('/api/carts/:cid', async (req, res) => {
+cartRouter.get('/:cid', async (req, res) => {
     const {cid} = req.params;
     try {
         const cart = await manager.getCartById(cid);
@@ -25,17 +26,20 @@ cartRouter.get('/api/carts/:cid', async (req, res) => {
 });
 
 // POST
+
 // Crear un nuevo carrito
-cartRouter.post("/api/carts", async (req, res) => {
+cartRouter.post("/", async (req, res) => {
     const newCart = await manager.createCart();
     res.send(`El carrito se creó con la siguiente información: ${JSON.stringify(newCart)}`);
 });
 
 // POST
+
 // Agregar un producto a un carrito específico
-cartRouter.post("/api/carts/:cid/products/:pid", async (req, res) => {
+cartRouter.post("/:cid/products/:pid", async (req, res) => {
     const {cid, pid} = req.params;
     try {
+
         if (!cid || !pid) {
             res.status(400).send("El id del carrito y del producto son necesarios");
             return;
@@ -45,6 +49,7 @@ cartRouter.post("/api/carts/:cid/products/:pid", async (req, res) => {
         // Verificamos el valor y le damos la respuesta correspondiente.
         add ? res.send(`Se agregó el producto ${pid} al carrito ${cid} exitosamente! 😁`) : res.send(`No es posible agregar el producto ${pid} en el carrito ${cid} `);
         console.log(add);
+
     } catch (error) {
         res.send(`Hubo un error al intentar agregar un producto al carrito ${cid}`);
         console.log(error);

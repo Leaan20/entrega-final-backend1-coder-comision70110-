@@ -8,16 +8,28 @@ const manager = new ProductManager("./src/data/products/products.json");
 
 
 // GET
-/*!!!!!!!!!!!!!!!!!!!!!! */
-// FALTA AGREGAR LIMITACION DE VISTAS.
-/* !!!!!!!!!!!!!!!!!!!!!! */
-productRouter.get('/api/products',async (req,res) => {
+
+//http://localhost:8080/api/products?limit=(numero que da el limite a mostrar).
+productRouter.get('/',async (req,res) => {
         const arrayProducts = await manager.getProducts();
-        res.send(arrayProducts);
+        const limit = req.query.limit;
+
+        try {
+                if(limit) {
+                    res.send(arrayProducts.slice(0,limit));
+                } else {
+                    res.send(arrayProducts);
+                }
+        } catch (error) {
+            res.status(500).send("Error del servidor");
+            console.log(error);
+        }
 })
 
-productRouter.get("/api/products/:pid", async (req,res) => {
+
+productRouter.get("/:pid", async (req,res) => {
     const {pid} = req.params;
+
     try {
         const productFound = await manager.getProductById(pid);
         if(!productFound) {
@@ -31,24 +43,26 @@ productRouter.get("/api/products/:pid", async (req,res) => {
 });
 
 // POST
-productRouter.post("/api/products", async (req,res) => {
+
+productRouter.post("/", async (req,res) => {
     const newProduct = req.body;
+
     try {
         if(!newProduct) {
             res.send("El producto que intenta crear esta vacio");
         } else {
-            const productNew = await manager.addProduct(newProduct);
+            await manager.addProduct(newProduct);
             res.send("Se envio la solicitud exitosamente");
         }
     } catch (error) {
         console.log(error);
-        res.send("No puede crearse el producto");
+        res.status(500).send("No puede crearse el producto");
     }
 });
 
 // PUT
 
-productRouter.put("/api/products/:pid", async (req, res) => {
+productRouter.put("/:pid", async (req, res) => {
     const {pid} = req.params;
     const updateProduct = req.body;
 
@@ -73,7 +87,7 @@ productRouter.put("/api/products/:pid", async (req, res) => {
 
 // DELETE
 
-productRouter.delete("/api/products/:pid", async (req,res) => {
+productRouter.delete("/:pid", async (req,res) => {
     const {pid} = req.params;
     // Revisamos primero si hay un producto con ese id.
     const productFound = await manager.getProductById(pid);

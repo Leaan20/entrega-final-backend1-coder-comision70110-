@@ -42,5 +42,27 @@
     "stock": 7,
     "category": "alimentos",
     "thumbnails": "sin imagen"
+  },
+  {
+    "id": 5,
+    "title": "Mayonesa",
+    "description": "sobre 50ml",
+    "code": "mno345",
+    "price": 850,
+    "status": true,
+    "stock": 9,
+    "category": "alimentos",
+    "thumbnails": "sin imagen"
+  },
+  {
+    "id": 6,
+    "title": "Mostaza",
+    "description": "sobre 50ml",
+    "code": "pqr678",
+    "price": 950,
+    "status": true,
+    "stock": 13,
+    "category": "alimentos",
+    "thumbnails": "sin imagen"
   }
 ]
