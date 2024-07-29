@@ -1,0 +1,19 @@
+{{!-- Aqui debemos tener los productos para mostrar en la ruta inicial. "/products" --}}
+
+<div>
+    <h1>Hola {{user.name}} {{user.surName}} Buenas tardes </h1>
+</div>
+
+{{!-- condicionales --}}
+
+{{#if user.mayorEdad}}
+
+    <p>Es mayor de edad, puede ingresar</p>
+
+{{else}}
+
+    <p>Es menor de edad, vuelves cuando seas mayor</p>
+
+{{/if}}
+
+<script src="js/main.js"></script>

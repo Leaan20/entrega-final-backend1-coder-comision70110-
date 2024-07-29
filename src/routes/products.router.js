@@ -13,7 +13,7 @@ const manager = new ProductManager("./src/data/products/products.json");
 productRouter.get('/',async (req,res) => {
         const arrayProducts = await manager.getProducts();
         const limit = req.query.limit;
-
+    // Aqui debemos renderizar los products.
         try {
                 if(limit) {
                     res.send(arrayProducts.slice(0,limit));
