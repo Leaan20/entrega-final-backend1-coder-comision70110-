@@ -11,17 +11,6 @@
     "thumbnails": "sin imagen"
   },
   {
-    "id": 2,
-    "title": "Fideos",
-    "description": "cinta largos",
-    "code": "def456",
-    "price": 1200,
-    "status": true,
-    "stock": 8,
-    "category": "alimentos",
-    "thumbnails": "sin imagen"
-  },
-  {
     "id": 3,
     "title": "Pure de tomates",
     "description": "en lata",
@@ -55,14 +44,36 @@
     "thumbnails": "sin imagen"
   },
   {
-    "id": 6,
-    "title": "Mostaza",
-    "description": "sobre 50ml",
-    "code": "pqr678",
-    "price": 950,
-    "status": true,
-    "stock": 13,
+    "id": 2,
+    "title": "Arroz",
+    "description": "Marolio",
+    "code": "asx332",
+    "price": "200",
+    "status": "true",
+    "stock": "20",
     "category": "alimentos",
+    "thumbnails": "sin imagen"
+  },
+  {
+    "id": 6,
+    "title": "Lentejas",
+    "description": "Lata 50grs",
+    "code": "ddd221",
+    "price": "100",
+    "status": "false",
+    "stock": "0",
+    "category": "alimentos",
+    "thumbnails": "sin imagen"
+  },
+  {
+    "id": 7,
+    "title": "Jabon de tocador",
+    "description": "Lux",
+    "code": "uiu888",
+    "price": "2000",
+    "status": "true",
+    "stock": "12",
+    "category": "hiegiene personal",
     "thumbnails": "sin imagen"
   }
 ]
