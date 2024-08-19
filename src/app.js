@@ -2,7 +2,9 @@ import express from "express";
 import { urlencoded } from "express";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
-import ProductManager from "./managers/productManager.js";
+import ProductManager from "./dao/db/product-manager-db.js";
+// importamos la conexion de mongoose.
+import connection from "./database.js";
 const app = express();
 const PORT = 8080;
 

@@ -1,10 +1,11 @@
 // Router de carts
-import CartManager from "../managers/cartManager.js";
+import CartManager from "../dao/db/cart-manager-db.js";
 import {Router} from "express";
 const cartRouter = Router();
 
+
 //instanciamos nuestro manager de carritos.
-const manager = new CartManager('./src/data/carts/carts.json', './src/data/products/products.json');
+const manager = new CartManager();
 
 // GET
 
@@ -30,6 +31,10 @@ cartRouter.get('/:cid', async (req, res) => {
 // Crear un nuevo carrito
 cartRouter.post("/", async (req, res) => {
     const newCart = await manager.createCart();
+    if (!newCart) {
+        res.status(500).send("Error al crear el carrito");
+        return;
+    }
     res.send(`El carrito se creó con la siguiente información: ${JSON.stringify(newCart)}`);
 });
 
@@ -38,6 +43,7 @@ cartRouter.post("/", async (req, res) => {
 // Agregar un producto a un carrito específico
 cartRouter.post("/:cid/products/:pid", async (req, res) => {
     const {cid, pid} = req.params;
+    const { quantity } = req.body;
     try {
 
         if (!cid || !pid) {
@@ -45,7 +51,7 @@ cartRouter.post("/:cid/products/:pid", async (req, res) => {
             return;
         }
 
-        const add = await manager.addProductToCart(cid, pid);
+        const add = await manager.addProductToCart(cid, pid, quantity);
         // Verificamos el valor y le damos la respuesta correspondiente.
         add ? res.send(`Se agregó el producto ${pid} al carrito ${cid} exitosamente! 😁`) : res.send(`No es posible agregar el producto ${pid} en el carrito ${cid} `);
         console.log(add);

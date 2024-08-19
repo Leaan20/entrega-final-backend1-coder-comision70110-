@@ -29,19 +29,22 @@ function renderProducts(array) {
 
         productDiv.classList.add("card");
 
-        productDiv.id = product.id;
+        productDiv.id = product._id;
 
         productDiv.innerHTML = `
             <h3>Title: ${product.title}</h3>
             <p>Description: ${product.description}</p>
             <p>Price: ${product.price}</p>
+            <div>
+                <img src=${product.thumbnails} alt=${product.title}>
+            </div>
             <button class="delete">Delete</button>
         `;
         productContainer.appendChild(productDiv);
 
         //boton para eliminar el producto.
         productDiv.querySelector("button").addEventListener("click", () => {
-            productDelete(product.id);
+            productDelete(product._id);
         })
 
     });

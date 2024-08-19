@@ -4,9 +4,12 @@
 
         {{#each products}}
             <div id="{{this.id}}" class="card">
-                <h3>Titulo: {{this.title}}</h3>
-                <p>Descripcion: {{this.description}}</p>
-                <p>Precio: {{this.price}}</p>
+                <h3>Title: {{this.title}}</h3>
+                <p>Description: {{this.description}}</p>
+                <p>Price: {{this.price}}</p>
+                <div>
+                    <img src="{{this.thumbnails}}" alt="{{this.title}}">
+                </div>
             </div>
             
         {{/each}}

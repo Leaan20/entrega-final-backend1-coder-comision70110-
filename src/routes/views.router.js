@@ -1,18 +1,32 @@
 import {Router} from "express";
-import ProductManager from "../managers/productManager.js";
+import ProductManager from "../dao/db/product-manager-db.js";
 
 const viewsRouter = Router();
 
 //Instanciamos nuestro manager de productos.
-const manager = new ProductManager("./src/data/products/products.json");
+const manager = new ProductManager();
 
 
 
 viewsRouter.get("/products", async (req,res) => {
     try {
         const products = await manager.getProducts();
+        // Lo mapeamos para que pueda ser renderizado con Handlebars.
+        const receivedProds = products.map(product=> ({
+            _id : product._id,
+            title: product.title,
+            description : product.description,
+            code: product.code,
+            price: product.price,
+            status: product.status,
+            stock: product.stock,
+            category: product.category,
+           thumbnails :product.thumbnails
+        }));
+        console.log(receivedProds);
+        
         if(products){
-            return res.render("home", {products});
+            return res.render("home", {products : receivedProds});
         } else {
             return res.send("No hay productos que mostrar")
         }

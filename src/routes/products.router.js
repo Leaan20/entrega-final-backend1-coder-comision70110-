@@ -1,10 +1,10 @@
 // Router de products
-import ProductManager from "../managers/productManager.js" ;
+import ProductManager from "../dao/db/product-manager-db.js" ;
 import {Router} from "express";
 const productRouter = Router();
 
-//Instanciamos nuestro manager de productos.
-const manager = new ProductManager("./src/data/products/products.json");
+//Instanciamos nuestro manager de productos con el model.
+const manager = new ProductManager();
 
 
 // GET
@@ -12,7 +12,11 @@ const manager = new ProductManager("./src/data/products/products.json");
 //http://localhost:8080/api/products?limit=(numero que da el limite a mostrar).
 productRouter.get('/',async (req,res) => {
         const arrayProducts = await manager.getProducts();
+        // Agregamos los query params a utilizar.
         const limit = req.query.limit;
+        const page = req.query.page;
+        const sort = req.query.sort;
+        const filter = req.query.query;
     // Aqui debemos renderizar los products.
         try {
                 if(limit) {
