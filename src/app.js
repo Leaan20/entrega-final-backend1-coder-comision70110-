@@ -39,7 +39,7 @@ app.set("view engine", "handlebars");
 app.set("views", "./src/views");
 
 // Manager para actualizar info productos
-const manager = new ProductManager("./src/data/products/products.json");
+const manager = new ProductManager();
 
 app.get("/", (req,res) => {
 

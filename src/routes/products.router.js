@@ -10,13 +10,12 @@ const manager = new ProductManager();
 // GET
 
 //http://localhost:8080/api/products?limit=(numero que da el limite a mostrar).
+
 productRouter.get('/',async (req,res) => {
         const arrayProducts = await manager.getProducts();
         // Agregamos los query params a utilizar.
         const limit = req.query.limit;
-        const page = req.query.page;
-        const sort = req.query.sort;
-        const filter = req.query.query;
+
     // Aqui debemos renderizar los products.
         try {
                 if(limit) {

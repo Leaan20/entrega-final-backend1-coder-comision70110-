@@ -1,0 +1,17 @@
+{{!-- Aqui estara la vista del carrito --}}
+
+<div class="cartContainer">
+        <ul class="productContain">
+            {{#each cart}}
+                <li class="cartProduct">
+                    <p>Product Id: {{this.productId}}</p>
+                    <p>Quantity: {{this.quantity}}</p>
+                </li>
+            {{/each}}
+        </ul>
+
+    <div>
+        <button class="cleanCart">Clean Cart</button>
+    </div>
+</div>
+
