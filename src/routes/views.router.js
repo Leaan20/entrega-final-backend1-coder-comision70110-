@@ -8,55 +8,61 @@ const viewsRouter = Router();
 const manager = new ProductManager();
 const cartManager = new CartManager();
 
-
+// Aplicamos paginate.
+// ejemplo de busqueda : http://localhost:8080/products?category=higiene%20personal&limit=1&page=2&sort=price&order=asc
 viewsRouter.get("/products", async (req,res) => {
-    //Aplicamos las distintas querys, para poder dar un limite por pagina y poder ordenarlos segun la preferencia.
-    const limit = parseInt(req.query.limit) || 10;
-    const page = parseInt(req.query.page) || 1;
-    const sort = req.query.sort || 'price';
-
-    // Si no se aplica el orden descendente , aplicamos el ascendente por defecto.
-
-    const order = req.query.order === 'desc' ? -1 : 1;
-    const category = req.query.category || '';
-
-    const filter = {};
-    // si hay una categoria filtramos por esa categoria.
-    if(category) {
-        filter.category = category;
-    }
-
     try {
+        // Utilizamos los query recibidos con la peticion
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1;
+        const sort = req.query.sort || 'price';
+        const order = req.query.order === 'desc' ? -1 : 1;
+        const category = req.query.category || '';
 
+        // El primero objeto en paginate.
+        const filter = {};
+
+        if(category) {
+            filter.category = category;
+        }
+
+        // Segundo objeto de paginate.
         const options = {
-            page,
             limit,
-            sort: {sort : order},
-            lean : true
-        }
-    // utilizamos el paginate de Mongoose, que recibe dos objetos , primero el filtro y luego las opciones.
-    const products = await ProductModel.paginate(filter, options);
+            page,
+            sort: { [sort]: order },
+            lean: true
+        };
 
-    res.render("home", {
-        products: products.docs,
-        pagination: {
-            totalDocs: products.totalDocs,
-            limit: products.limit,
-            totalPages: products.totalPages,
-            page: products.page,
-            pagingCounter: products.pagingCounter,
-            hasPrevPage: products.hasPrevPage,
-            hasNextPage: products.hasNextPage,
-            prevPage: products.prevPage,
-            nextPage: products.nextPage
+        const products = await ProductModel.paginate(filter, options);
+
+        const payload = {
+            payload: products.docs,
+            status: "success",
+            pagination: {
+                totalDocs: products.totalDocs,
+                limit: products.limit,
+                totalPages: products.totalPages,
+                page: products.page,
+                pagingCounter: products.pagingCounter,
+                hasPrevPage: products.hasPrevPage,
+                hasNextPage: products.hasNextPage,
+                prevPage: products.prevPage,
+                nextPage: products.nextPage
+            }
         }
-    });
+        res.status(200).render("home", {...payload});
+
 
     } catch (error) {
-        res.status(500).send("Hay un error del servidor, no podemos mostrar los productos");
+        res.status(500).render("error", {
+            status: 'error',
+            message: "Hay un error del servidor, no podemos mostrar los productos"
+        });
         console.log(error);
     }
-})
+});
+
 
 // Este router va a trabajar con websocket. para actualizar automaticamente la vista.
 
