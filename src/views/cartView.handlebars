@@ -4,8 +4,18 @@
         <ul class="productContain">
             {{#each cart}}
                 <li class="cartProduct">
-                    <p>Product Id: {{this.productId}}</p>
-                    <p>Quantity: {{this.quantity}}</p>
+                    <div class="infoContain">
+                        <img src={{this.thumbnails}} alt={{this.title}}>
+                    </div>
+                    <div class="infoContain">
+                        <p>Product Id: {{this.productId}}</p>
+                        <p>Title: {{this.title}}</p>
+                    </div>
+                    <div class="infoContain">
+                        <p>Quantity: {{this.quantity}}</p>
+                        <p>Category: {{this.category}}</p>
+                        <p>Price x unit: ${{this.price}}</p>
+                    </div>
                 </li>
             {{/each}}
         </ul>

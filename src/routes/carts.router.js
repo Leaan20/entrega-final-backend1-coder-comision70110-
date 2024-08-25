@@ -1,6 +1,7 @@
 // Router de carts
 import CartManager from "../dao/db/cart-manager-db.js";
 import {Router} from "express";
+
 const cartRouter = Router();
 
 
@@ -10,7 +11,6 @@ const manager = new CartManager();
 // GET
 
 // Ruta para ver un carrito específico con los productos que hay dentro
-// ACA APLICAR POPULATE.
 cartRouter.get('/:cid', async (req, res) => {
     const {cid} = req.params;
     try {
@@ -22,7 +22,7 @@ cartRouter.get('/:cid', async (req, res) => {
             res.send(cart);
         }
     } catch (error) {
-        res.send("Hubo un error al intentar cargar el carrito");
+        res.status(500).send("Hubo un error al intentar cargar el carrito");
         console.log(error);
     }
 });
@@ -103,10 +103,30 @@ cartRouter.delete("/:cid", async (req, res) => {
 // PUT
 
 // Actualizar el carrito con un arreglo de productos.
-cartRouter.put("/:cid", async (req,res) => {
-    const { cid } = req.params;
+// Recibira el arreglo con los productos (que tenemos cargados en nuestra coleccion de products).
+// el formato sera con product(con el Id que nos da MongoDB) y su cantidad (quantity), luego el resto de la informacion sera accesible o visible a partir del populate en nuestro manager.
+cartRouter.put("/:cid", async (req, res) => {
+    try {
+        const { cid } = req.params;
+        const update = req.body;
 
-})
+        if (!cid) {
+            return res.status(404).send("El carrito solicitado no existe");
+        }
+
+        if (!update || update.length === 0) {
+            return res.status(404).send("No hay productos para actualizar.");
+        }
+
+        const updateCart = await manager.updateCart(cid, update);
+        console.log(updateCart);
+        res.status(201).send("Se ha actualizado el carrito con los productos recibidos.");
+
+    } catch (error) {
+        res.status(500).send("Tenemos un error, no podemos actualizar el carrito en este momento.");
+        console.log(error);
+    }
+});
 
 
 
@@ -114,14 +134,14 @@ cartRouter.put("/:cid", async (req,res) => {
 
 cartRouter.put("/:cid/products/:pid", async (req, res) => {
     const { cid, pid } = req.params;
-    let { quantity } = req.body;  // Utiliza let para permitir reasignación
+    let { quantity } = req.body;
     try {
-        // Validamos la cantidad y asignamos 1 si no se pasa cantidad.
+        //Validacion de la cantidad, para el caso que no sea un numero, no haya informacion o sea un numero negativo.
         if (!quantity || isNaN(quantity) || quantity <= 0) {
             quantity = 1;
         }
         
-        // Actualizamos la cantidad del producto en el carrito.
+        // Actualizamos la cantidad del producto en el carrito, reutilizamos el metodo, que si existe el producto solo actualiza la cantidad.
         const update = await manager.addProductToCart(cid, pid, quantity);
 
         console.log("Se pudo actualizar la cantidad de productos.");

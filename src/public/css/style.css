@@ -177,18 +177,30 @@ body {
   list-style: none;
   border-radius: 10px;
   background-color: #f9f9f9;
+  padding: 5px;
   margin: 5px;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
   gap: 5px;
 }
 
+
+
 .cartProduct {
+  display: flex;
+  gap: 5px;
   width:auto;
   height:auto;
   padding: 4px;
   border: solid 1px #002;
   border-radius: 10px;
+}
+
+.cartProduct .infoContain{
+  margin: 10px;
+  padding:5px;
+  display: flex;
+  border: 2px solid blue;
 }
 
 .cleanCart{
@@ -205,4 +217,10 @@ body {
 
 .cleanCart:hover{
   background-color: #d00;
+}
+
+.page {
+  font-size:1.6em;
+  color: #002;
+
 }

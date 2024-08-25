@@ -25,7 +25,11 @@ class CartManager {
     // Mostrar el carrito por id
     async getCartById(cartId) {
         try {
-            const cart = await CartModel.findById(cartId);
+            // Utilizamos el populate para poder mostrar el resto de los datos en el carrito.
+            const cart = await CartModel.findById(cartId).populate("products.product");
+
+            console.log(cart);
+            
             if(!cart){
                 console.log("No existe el carrito con ese id");
                 return null;
@@ -33,7 +37,7 @@ class CartManager {
             return cart;
         } catch (error) {
             console.log("Error al buscar el carrito por Id", error);
-            
+
         }
     }
 
@@ -124,7 +128,7 @@ class CartManager {
             // Vaciamos el array de productos
             cart.products = [];
     
-            // Guardamos los cambios en el carrito
+            // Guardamos  el carrito
             await cart.save();
     
             console.log("El carrito se vacio exitosamente.");
@@ -132,7 +136,7 @@ class CartManager {
     
         } catch (error) {
             console.log("No es posible vaciar el carrito", error);
-            throw error;  // Lanza el error para manejarlo en el router
+            throw error;
         }
     }
     
@@ -140,17 +144,26 @@ class CartManager {
     // Actualizar carrito.
     async updateCart(cid, update){
 
-        if(!update){
-            console.log("No hay datos a actualizar");
+      try {
+        // Buscamos el carrito por su Id
+        const cart = await CartModel.findById(cid);
+
+        if(!cart) {
+            console.log("No hay un carrito con ese Id");
             return;
         }
 
+        // Cart en su propiedad products, le pasamos la actualizacion.
+        cart.products = update;
 
-        const cart = await CartModel.findByIdAndUpdate(cid,update);
-
-        cart.save();
+        await cart.save();
 
         console.log("Se ha actualizado el carrito exitosamente.");
+        
+      } catch (error) {
+        console.log("Tuvimos un error al actualizar el carrito", error);
+        
+      }
         
     }
 
