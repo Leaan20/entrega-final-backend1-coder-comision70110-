@@ -5,7 +5,9 @@ import mongoose from "mongoose";
 const connection = mongoose.connect("mongodb+srv://LeandroA20:Sonic12345@cluster0.lxqoi.mongodb.net/ecommerce?retryWrites=true&w=majority&appName=Cluster0")
     .then( ()=> console.log("the device is connected sucessfully")
     )
-    .catch( (error) => console.log("Hubo un error al internar conectarse", error)
-    );
+    .catch( (error) => {
+        throw error
+    }
+);
 
 export default connection;

@@ -57,7 +57,7 @@ class ProductManager {
             const productsArray = await ProductModel.find();
             return productsArray;
         } catch (error) {
-            console.log("Error al obtener los productos" , error);
+            throw error;
         }
     }
 
@@ -68,14 +68,12 @@ class ProductManager {
             const product = await ProductModel.findById(id);
 
             if(!product){
-                console.log("El producto no fue encontrado.");
                 return null;
             }
 
-            console.log("Producto encontrado!");
             return product;
         } catch (error) {
-            console.log("Error al buscar el producto por id", error);
+            throw error;
         }
     }
 
@@ -86,14 +84,13 @@ class ProductManager {
             const update = await ProductModel.findByIdAndUpdate(id, updateProduct);
 
             if(!update){
-                console.log("No se encuentra el producto, intente nuevamente");
                 return null;
             }
 
             return update;
 
         } catch (error) {
-            console.log("Error al actualizar el producto", error);
+            throw error;
         }
     }
 
@@ -104,13 +101,10 @@ class ProductManager {
             const productDelete = await ProductModel.findByIdAndDelete(id);
 
             if(!productDelete){
-                console.log("No existe el producto que desea eliminar, vuelva a intentar. ");
                 return;
             }
-            console.log("Producto eliminado exitosamente.");
-            
         } catch (error) {
-            console.log("Error al eliminar el producto", error);
+            throw error;
         }
     }
 

@@ -200,7 +200,15 @@ body {
   margin: 10px;
   padding:5px;
   display: flex;
-  border: 2px solid blue;
+}
+.infoContain p {
+  margin: 5px;
+}
+
+.infoContain p .font {
+  color: #002;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
 }
 
 .cleanCart{

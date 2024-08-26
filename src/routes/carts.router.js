@@ -22,8 +22,8 @@ cartRouter.get('/:cid', async (req, res) => {
             res.send(cart);
         }
     } catch (error) {
+        throw error;
         res.status(500).send("Hubo un error al intentar cargar el carrito");
-        console.log(error);
     }
 });
 
@@ -55,11 +55,11 @@ cartRouter.post("/:cid/products/:pid", async (req, res) => {
         const add = await manager.addProductToCart(cid, pid, quantity);
         // Verificamos el valor y le damos la respuesta correspondiente.
         add ? res.send(`Se agregó el producto ${pid} al carrito ${cid} exitosamente! 😁`) : res.send(`No es posible agregar el producto ${pid} en el carrito ${cid} `);
-        console.log(add);
 
     } catch (error) {
+        throw error;
         res.send(`Hubo un error al intentar agregar un producto al carrito ${cid}`);
-        console.log(error);
+        
     }
 });
 
@@ -95,7 +95,7 @@ cartRouter.delete("/:cid", async (req, res) => {
         res.status(200).send("Vaciaste el carrito exitosamente.");
         
     } catch (error) {
-        console.log("Hubo un error al vaciar el carrito", error);
+        throw error;
         res.status(500).send("No fue posible vaciar el carrito, prueba nuevamente más tarde.");
     }
 });
@@ -119,12 +119,11 @@ cartRouter.put("/:cid", async (req, res) => {
         }
 
         const updateCart = await manager.updateCart(cid, update);
-        console.log(updateCart);
         res.status(201).send("Se ha actualizado el carrito con los productos recibidos.");
 
     } catch (error) {
+        throw error;
         res.status(500).send("Tenemos un error, no podemos actualizar el carrito en este momento.");
-        console.log(error);
     }
 });
 
@@ -136,27 +135,26 @@ cartRouter.put("/:cid/products/:pid", async (req, res) => {
     const { cid, pid } = req.params;
     let { quantity } = req.body;
     try {
-        //Validacion de la cantidad, para el caso que no sea un numero, no haya informacion o sea un numero negativo.
+        // Validamos de la cantidad
         if (!quantity || isNaN(quantity) || quantity <= 0) {
             quantity = 1;
         }
         
-        // Actualizamos la cantidad del producto en el carrito, reutilizamos el metodo, que si existe el producto solo actualiza la cantidad.
-        const update = await manager.addProductToCart(cid, pid, quantity);
+        // actualizamos solo la cantidad.
+        const updatedCart = await manager.updateProductQuantity(cid, pid, quantity);
 
-        console.log("Se pudo actualizar la cantidad de productos.");
-
-        // Enviamos la respuesta con el carrito actualizado
+        // informamos que se actualizo la cantidad del producto.
         res.status(200).json({
-            message: "Se actualizó la cantidad agregada.",
-            cart: update
+            message: "Cantidad actualizada correctamente.",
+            cart: updatedCart
         });
 
     } catch (error) {
-        console.log("No es posible actualizar el carrito", error);
-        res.status(500).send("Hubo un problema al actualizar el carrito, intente más tarde.");
+        res.status(500).send("Hubo un problema al actualizar la cantidad del producto en el carrito.");
+        console.log(error);
     }
 });
+
 
 
 export default cartRouter;

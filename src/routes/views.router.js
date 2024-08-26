@@ -59,7 +59,6 @@ viewsRouter.get("/products", async (req,res) => {
             status: 'error',
             message: "Hay un error del servidor, no podemos mostrar los productos"
         });
-        console.log(error);
     }
 });
 
@@ -100,7 +99,8 @@ viewsRouter.get("/carts/:cid", async (req, res) => {
 
     } catch (error) {
         res.status(500).send("Hay un error , no es posible mostrar el carrito.");
-        console.log(error);
+        throw error;
+
     }
 });
 

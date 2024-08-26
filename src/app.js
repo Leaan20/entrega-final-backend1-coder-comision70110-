@@ -49,6 +49,7 @@ res.send("Pagina de inicio, bienvenido 😁👌");
 // Creamos nuestro servidor.
 // utilizamos una referencia de nuestro servidor.
 const httpServer = app.listen(PORT, () => {
+    // Este lo dejo para ingresar mas rapido al navegador.
     console.log(`servidor escuchando desde el puerto: http://localhost:${PORT}`);
 });
 
@@ -62,7 +63,6 @@ const io = new Server(httpServer);
 // acuerdo de conexion. recibimos el socket de cliente como parametro para poder recibir y enviar mensajes.
 
 io.on('connection', async (socket) => {
-    console.log('Un cliente se ha conectado');
 
     // enviamos los productos al cliente.
     socket.emit("products", await manager.getProducts());
@@ -78,7 +78,6 @@ io.on('connection', async (socket) => {
     // recibimos el nuevo producto:
     socket.on("newProduct", async (data) => {
         await manager.addProduct(data);
-        console.log(`Recibimos el siguiente producto: ${JSON.stringify(data)}`);
 
         // volvemos a enviar la lista actualizada.
         const updatedProducts = await manager.getProducts();

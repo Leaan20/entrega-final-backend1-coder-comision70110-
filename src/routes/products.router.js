@@ -25,7 +25,7 @@ productRouter.get('/',async (req,res) => {
                 }
         } catch (error) {
             res.status(500).send("Error del servidor");
-            console.log(error);
+            throw error;
         }
 })
 
@@ -41,6 +41,7 @@ productRouter.get("/:pid", async (req,res) => {
             res.send(productFound);
         }
     } catch (error) {
+        throw error;
         res.status(204).send("Error al buscar porductos con ese id")
     }
 });
@@ -58,7 +59,7 @@ productRouter.post("/", async (req,res) => {
             res.send("Se envio la solicitud exitosamente");
         }
     } catch (error) {
-        console.log(error);
+        throw error;
         res.status(500).send("No puede crearse el producto");
     }
 });
@@ -82,7 +83,7 @@ productRouter.put("/:pid", async (req, res) => {
         await manager.updateProduct(pid, updateProduct);
         res.send("Producto actualizado con exito!");
     } catch (error) {
-        console.error(error);
+        throw error;
         res.status(500).send("Error al actualizar el producto");
     }
 });
@@ -108,6 +109,7 @@ productRouter.delete("/:pid", async (req,res) => {
             }
 
     } catch (error) {
+        throw error;
         res.send("No se pudo eliminar el producto");
     }
 })
